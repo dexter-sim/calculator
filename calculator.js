@@ -8,10 +8,13 @@ const seven = document.getElementById("7");
 const eight = document.getElementById("8");
 const nine = document.getElementById("9");
 const zero = document.getElementById("0");
+const decimal = document.getElementById("decimal");
 
 let previous = 0;
 let current = 0;
 let op = null;
+let decimalPlaces = 0;
+let dec = false;
 
 const clear = document.getElementById("clear");
 const backspace = document.getElementById("backspace");
@@ -23,6 +26,12 @@ const equal = document.getElementById("equal");
 const prev = document.getElementById("prev");
 const curr = document.getElementById("curr");
 
+decimal.addEventListener("click", () => {
+    if (!dec){
+        dec = true;
+        decimalPlaces++;
+    }
+});
 one.addEventListener("click", () => {appendNum(1);});
 two.addEventListener("click", () => {appendNum(2);});
 three.addEventListener("click", () => {appendNum(3);});
@@ -47,12 +56,18 @@ function backspaceHelper(){
 }
 
 function appendNum(digit){
-    if (curr.textContent === "0"){
+    if (dec) {
+        curr.textContent += "." + digit;
+        current += digit/10;
+        dec = false;
+        decimalPlaces++;
+    } else if (curr.textContent === "0"){
         curr.textContent = digit;
         current = digit;
     } else {
         curr.textContent += digit;
-        current = current * 10 + digit
+        current += digit / (decimalPlaces * 10);
+        decimalPlaces++;
     }
 }
 
