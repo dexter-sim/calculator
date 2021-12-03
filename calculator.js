@@ -79,10 +79,18 @@ function backspaceHelper(){
 
 function appendNum(digit){
     if (dec) {
-        curr.textContent += "." + digit;
-        current += digit/10;
-        dec = false;
-        decimalPlaces++;
+        if (!curr.textContent.includes(".")){
+            curr.textContent += "." + digit;
+            current = parseFloat(curr.textContent)
+            dec = false;
+            decimalPlaces++;
+        } else {
+            decimalPlaces--;
+            curr.textContent += digit;
+            current = parseFloat(curr.textContent);
+            decimalPlaces++;
+            dec = false;
+        }
     } else if (curr.textContent === "0"){
         curr.textContent = digit;
         current = digit;
@@ -91,11 +99,28 @@ function appendNum(digit){
         current = -digit;
     } else if (decimalPlaces > 0){
         curr.textContent += digit;
-        current += digit / (Math.pow(10, decimalPlaces));
+        current = parseFloat(curr.textContent);
         decimalPlaces++;
-    } else {
+    } else if (current % 1 !== 0){
+        let temp = current;
+        while (temp % 1 !== 0){
+            temp *= 10;
+            decimalPlaces++;
+        }
         curr.textContent += digit;
-        current = current * 10 + digit;
+        decimalPlaces++;
+        current = parseFloat(curr.textContent);
+
+        decimalPlaces++;
+    } 
+    
+    else {
+        curr.textContent += digit;
+        if (current >= 0){
+            current = current * 10 + digit;
+        } else {
+            current = current * 10 - digit;
+        }
     }
 }
 
