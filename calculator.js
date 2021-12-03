@@ -57,20 +57,21 @@ clear.addEventListener("click", () => {curr.textContent = "0"; prev.textContent 
 function backspaceHelper(){
     if (curr.textContent !== "0"){
         curr.textContent = curr.textContent.substring(0, curr.textContent.length - 1);
-        if (curr.textContent.length === 0){
-            curr.textContent = "0";
-        }
         if (decimalPlaces >= 1){
             decimalPlaces--;
             if (decimalPlaces === 1){
                 curr.textContent = curr.textContent.substring(0, curr.textContent.length - 1);
                 dec = false;
+                decimalPlaces = 0;
             }
         }
-        if (curr.textContent !== "-"){
+        if (curr.textContent === ""){
+            curr.textContent = "0";
+            current = 0;
+        } else if (curr.textContent !== "-"){
             current = parseFloat(curr.textContent, 10);
         } else {
-            current = 0;
+            curr.textContent = "-0"
             neg = false;
         }
     }
@@ -103,14 +104,12 @@ add.addEventListener("click", addHelper);
 function addHelper(){
     dec = false;
     decimalPlaces = 0;
-    if (previous !== 0){
-        evaluate();
-    }
+    evaluate();
     previous = current;
     prev.textContent = previous + " +";
     op = "add";
     current = null;
-    curr.textContent = " ";
+    curr.textContent = "0";
 }
 
 subtract.addEventListener("click", () => {
@@ -121,7 +120,7 @@ subtract.addEventListener("click", () => {
     prev.textContent = previous + " -";
     op = "subtract";
     current = null;
-    curr.textContent = " ";
+    curr.textContent = "0";
 });
 
 multiply.addEventListener("click", () => {
@@ -132,7 +131,7 @@ multiply.addEventListener("click", () => {
     prev.textContent = previous + " ×";
     op = "multiply";
     current = null;
-    curr.textContent = " ";
+    curr.textContent = "0";
 });
 
 divide.addEventListener("click", () => {
@@ -143,7 +142,7 @@ divide.addEventListener("click", () => {
     prev.textContent = previous + " ÷";
     op = "divide";
     current = null;
-    curr.textContent = " ";
+    curr.textContent = "0";
 });
 
 equal.addEventListener("click", evaluate);
