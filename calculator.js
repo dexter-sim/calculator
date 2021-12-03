@@ -49,6 +49,8 @@ negative.addEventListener("click", () => {
     if ((current === 0 || current === null) && neg === false){
         curr.textContent = "-0";
         neg = true;
+    } else if (curr.textContent === "-0"){
+        curr.textContent = "0";
     }
 })
 backspace.addEventListener("click", backspaceHelper);
@@ -177,7 +179,7 @@ function evaluate(){
     decimalPlaces = 0;
     const res = operator(previous, current, op)
     curr.textContent = res;
-    if (res === "undefined"){
+    if (res === 0){
         current = 0;
         previous = 0;
     } else {
@@ -201,7 +203,8 @@ function operator(num1, num2, op){
 
 function operatorDivide(num1, num2){
     if (num2 === 0){
-        return "undefined";
+        prev.textContent = "no u";
+        return 0;
     } else {
         return num1 / num2;
     }
