@@ -15,7 +15,9 @@ let current = 0;
 let op = null;
 let decimalPlaces = 0;
 let dec = false;
+let neg = false;
 
+const negative = document.getElementById("negative");
 const clear = document.getElementById("clear");
 const backspace = document.getElementById("backspace");
 const add = document.getElementById("add");
@@ -43,6 +45,12 @@ eight.addEventListener("click", () => {appendNum(8);});
 nine.addEventListener("click", () => {appendNum(9);});
 zero.addEventListener("click", () => {appendNum(0);});
 
+negative.addEventListener("click", () => {
+    if ((current === 0 || current === null) && neg === false){
+        curr.textContent = "-0";
+        neg = true;
+    }
+})
 backspace.addEventListener("click", backspaceHelper);
 clear.addEventListener("click", () => {curr.textContent = "0"; prev.textContent = "---"; previous = 0; current = 0; op = null;});
 
@@ -59,10 +67,11 @@ function backspaceHelper(){
                 dec = false;
             }
         }
-        if (curr.textContent.length > 0){
+        if (curr.textContent !== "-"){
             current = parseFloat(curr.textContent, 10);
         } else {
             current = 0;
+            neg = false;
         }
     }
 }
@@ -76,6 +85,9 @@ function appendNum(digit){
     } else if (curr.textContent === "0"){
         curr.textContent = digit;
         current = digit;
+    } else if (curr.textContent === "-0"){
+        curr.textContent = "-" + digit;
+        current = -digit;
     } else if (decimalPlaces > 0){
         curr.textContent += digit;
         current += digit / (Math.pow(10, decimalPlaces));
@@ -137,6 +149,7 @@ divide.addEventListener("click", () => {
 equal.addEventListener("click", evaluate);
 function evaluate(){
     dec = false;
+    neg = false;
     decimalPlaces = 0;
     const res = operator(previous, current, op)
     curr.textContent = res;
