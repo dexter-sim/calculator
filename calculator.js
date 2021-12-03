@@ -52,6 +52,18 @@ function backspaceHelper(){
         if (curr.textContent.length === 0){
             curr.textContent = "0";
         }
+        if (decimalPlaces >= 1){
+            decimalPlaces--;
+            if (decimalPlaces === 1){
+                curr.textContent = curr.textContent.substring(0, curr.textContent.length - 1);
+                dec = false;
+            }
+        }
+        if (curr.textContent.length > 0){
+            current = parseFloat(curr.textContent, 10);
+        } else {
+            current = 0;
+        }
     }
 }
 
@@ -64,61 +76,68 @@ function appendNum(digit){
     } else if (curr.textContent === "0"){
         curr.textContent = digit;
         current = digit;
+    } else if (decimalPlaces > 0){
+        curr.textContent += digit;
+        current += digit / (Math.pow(10, decimalPlaces));
+        decimalPlaces++;
     } else {
         curr.textContent += digit;
-        current += digit / (decimalPlaces * 10);
-        decimalPlaces++;
+        current = current * 10 + digit;
     }
 }
 
 
 add.addEventListener("click", addHelper);
 function addHelper(){
+    dec = false;
+    decimalPlaces = 0;
     if (previous !== 0){
         evaluate();
     }
     previous = current;
     prev.textContent = previous + " +";
     op = "add";
-    current = 0;
-    curr.textContent = "0";
+    current = null;
+    curr.textContent = " ";
 }
 
 subtract.addEventListener("click", () => {
-    if (previous !== 0){
-        evaluate();
-    }
+    dec = false;
+    decimalPlaces = 0;
+    evaluate();
     previous = current;
     prev.textContent = previous + " -";
     op = "subtract";
-    current = 0;
-    curr.textContent = "0";
+    current = null;
+    curr.textContent = " ";
 });
 
 multiply.addEventListener("click", () => {
-    if (previous !== 0){
-        evaluate();
-    }
+    dec = false;
+    decimalPlaces = 0;
+    evaluate();
     previous = current;
     prev.textContent = previous + " ×";
     op = "multiply";
-    current = 0;
-    curr.textContent = "0";
+    current = null;
+    curr.textContent = " ";
 });
 
 divide.addEventListener("click", () => {
-    if (previous !== 0){
-        evaluate();
-    }
+    dec = false;
+    decimalPlaces = 0;
+    evaluate();
     previous = current;
     prev.textContent = previous + " ÷";
     op = "divide";
-    current = 0;
-    curr.textContent = "0";
+    current = null;
+    curr.textContent = " ";
 });
 
 equal.addEventListener("click", evaluate);
 function evaluate(){
+    dec = false;
+    decimalPlaces = 0;
     const res = operator(previous, current, op)
     curr.textContent = res;
     if (res === "undefined"){
@@ -131,6 +150,7 @@ function evaluate(){
 }
 
 function operator(num1, num2, op){
+    if (current === null){return num1};
     return op === "add" 
         ? num1 + num2 
         : op === "subtract"
