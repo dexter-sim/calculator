@@ -79,6 +79,10 @@ button {
     background-color: thistle;
 }
 
+#equal {
+    background-color: orange;
+}
+
 button:hover {
     opacity: 100%;
 }

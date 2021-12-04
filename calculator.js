@@ -51,10 +51,11 @@ negative.addEventListener("click", () => {
         neg = true;
     } else if (curr.textContent === "-0"){
         curr.textContent = "0";
+        neg = false;
     }
 })
 backspace.addEventListener("click", backspaceHelper);
-clear.addEventListener("click", () => {curr.textContent = "0"; prev.textContent = "---"; previous = 0; current = 0; op = null;});
+clear.addEventListener("click", () => {curr.textContent = "0"; prev.textContent = "MEM CLEARED"; previous = 0; current = 0; op = null;});
 
 function backspaceHelper(){
     if (curr.textContent !== "0"){
@@ -114,9 +115,7 @@ function appendNum(digit){
         current = parseFloat(curr.textContent);
 
         decimalPlaces++;
-    } 
-    
-    else {
+    } else {
         curr.textContent += digit;
         if (current >= 0){
             current = current * 10 + digit;
